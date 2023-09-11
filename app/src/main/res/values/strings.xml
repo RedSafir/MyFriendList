@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyInstagramFriendsList</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dummy_text">lorem ipsum lores padsaa kamp</string>
+    <string name="dummy_title">lorem ipsum lores</string>
+    <string name="findFriend">Cari Teman</string>
+    <string name="follower">Follower</string>
+    <string name="following">Following</string>
+</resources>
