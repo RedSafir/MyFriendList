@@ -6,7 +6,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-private const val TOKEN = "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"
+private const val TOKEN = "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"
 interface ApiService {
 
     @GET("users")

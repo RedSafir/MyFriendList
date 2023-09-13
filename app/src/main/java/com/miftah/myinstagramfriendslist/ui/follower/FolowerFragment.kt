@@ -1,39 +1,58 @@
-package com.miftah.myinstagramfriendslist.ui
+package com.miftah.myinstagramfriendslist.ui.follower
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
-import com.miftah.myinstagramfriendslist.databinding.FragmentFolowerBinding
+import com.miftah.myinstagramfriendslist.databinding.FragmentFollowerBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
-import com.miftah.myinstagramfriendslist.vmodel.ViewModelMain
+import com.miftah.myinstagramfriendslist.ui.follower.data.ViewModelFollower
+import com.miftah.myinstagramfriendslist.ui.profile.data.ViewModelProfile
 
 class FolowerFragment : Fragment() {
 
-    private lateinit var binding: FragmentFolowerBinding
+    private lateinit var binding: FragmentFollowerBinding
     private lateinit var adapter : AdapterFriendCard
-    private val mainViewModel by viewModels<ViewModelMain>()
+    private val mainViewModel by viewModels<ViewModelFollower>()
+    private val sharedViewModel by activityViewModels<ViewModelProfile>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentFolowerBinding.inflate(inflater, container, false)
+        binding = FragmentFollowerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainViewModel.friendFollower.observe(viewLifecycleOwner) {
-            showData(it)
+        sharedViewModel.userResponse.observe(viewLifecycleOwner) {
+            mainViewModel.getFollower(it.name)
         }
 
+        setupRv()
+
+        mainViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+
+        mainViewModel.friendFollower.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated: ${it.isEmpty()}")
+            showData(it)
+        }
+    }
+
+    private fun setupRv() {
+        adapter = AdapterFriendCard()
+        binding.rvFollower.adapter = adapter
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvFollower.layoutManager = layoutManager
         binding.rvFollower.addItemDecoration(
@@ -42,9 +61,9 @@ class FolowerFragment : Fragment() {
     }
 
     private fun showData(friendResponds: List<FriendResponds>?) {
-        adapter = AdapterFriendCard()
+
         adapter.submitList(friendResponds)
-        binding.rvFollower.adapter = adapter
+
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -55,6 +74,10 @@ class FolowerFragment : Fragment() {
         } else {
             View.GONE
         }
+    }
+
+    companion object {
+        const val TAG = "folowerFragement"
     }
 
 }

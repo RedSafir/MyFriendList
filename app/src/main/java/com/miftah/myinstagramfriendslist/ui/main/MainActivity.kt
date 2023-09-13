@@ -1,4 +1,4 @@
-package com.miftah.myinstagramfriendslist.ui
+package com.miftah.myinstagramfriendslist.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
-import com.miftah.myinstagramfriendslist.vmodel.ViewModelMain
+import com.miftah.myinstagramfriendslist.ui.main.data.ViewModelMain
+import com.miftah.myinstagramfriendslist.ui.profile.MainProfileActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
             showLoading(it)
         }
 
+        mainViewModel.getFriendsAll()
+
         setupRv()
 
         setupSrc()
@@ -38,13 +41,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun setupSrc() {
         with(mainActivityBinder) {
             searchView.setupWithSearchBar(searchBar)
             searchView
                 .editText
-                .setOnEditorActionListener { textView, actionId, event ->
+                .setOnEditorActionListener { _, _, _ ->
                     searchBar.text = searchView.text
                     searchBar.text?.let {
                         if (it.isNotEmpty()) {

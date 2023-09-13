@@ -1,4 +1,4 @@
-package com.miftah.myinstagramfriendslist.ui
+package com.miftah.myinstagramfriendslist.ui.profile
 
 import android.os.Build
 import android.os.Bundle
@@ -12,41 +12,32 @@ import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
 import com.miftah.myinstagramfriendslist.data.retrofit.UserResponse
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainProfileBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterTabLayout
-import com.miftah.myinstagramfriendslist.vmodel.ViewModelMain
+import com.miftah.myinstagramfriendslist.ui.profile.data.ViewModelProfile
 
 class MainProfileActivity : AppCompatActivity() {
 
     private lateinit var mainProfileActivity: ActivityMainProfileBinding
-    private val mainViewModel by viewModels<ViewModelMain>()
+    private var friendResponds : FriendResponds? = null
+    private val mainViewModel by viewModels<ViewModelProfile>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainProfileActivity = ActivityMainProfileBinding.inflate(layoutInflater)
         setContentView(mainProfileActivity.root)
 
-        val selectionAdapter = AdapterTabLayout(this)
-        val viewPager = mainProfileActivity.viewPager
+        mainViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
 
-        viewPager.adapter = selectionAdapter
-        val tabs = mainProfileActivity.tabMenu
-
-        TabLayoutMediator(tabs, viewPager) { tab, position ->
-            tab.text = resources.getString(TABS_TITLE[position])
-        }.attach()
-
-        val friendResponds = if (Build.VERSION.SDK_INT >= 33) {
+        friendResponds = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra<FriendResponds>(MAIN_PERSON, FriendResponds::class.java)
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra<FriendResponds>(MAIN_PERSON)
         }
 
-        mainViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
+        setupLayout(friendResponds as FriendResponds)
 
-        setupData(friendResponds as FriendResponds)
-
-        mainViewModel.UserResponse.observe(this) {
+        mainViewModel.userResponse.observe(this) {
             setupProfile(it)
         }
 
@@ -62,10 +53,18 @@ class MainProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupData(friendResponds: FriendResponds) {
+    private fun setupLayout(friendResponds: FriendResponds) {
         mainViewModel.getFriend(friendResponds.login)
-        mainViewModel.getFollower(friendResponds.login)
-        mainViewModel.getFollowing(friendResponds.login)
+        val selectionAdapter = AdapterTabLayout(this)
+        val viewPager = mainProfileActivity.viewPager
+
+        viewPager.adapter = selectionAdapter
+        val tabs = mainProfileActivity.tabMenu
+
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = resources.getString(TABS_TITLE[position])
+        }.attach()
+
     }
 
     private fun setupProfile(user: UserResponse) {
