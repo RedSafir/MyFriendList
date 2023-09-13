@@ -1,47 +1,68 @@
 package com.miftah.myinstagramfriendslist.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.R
 import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
-import com.miftah.myinstagramfriendslist.ui.vmodel.ViewModelMain
+import com.miftah.myinstagramfriendslist.vmodel.ViewModelMain
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainActivityBinder: ActivityMainBinding
+    private lateinit var adapter: AdapterFriendCard
     private val mainViewModel by viewModels<ViewModelMain>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityBinder = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
-
+        setContentView(mainActivityBinder.root)
         supportActionBar?.hide()
-
-        mainViewModel.friendResponds.observe(this) {
-            showData(it)
-        }
-
-        val layoutManager = LinearLayoutManager(this)
-        mainActivityBinder.rvMain.layoutManager = layoutManager
-
-        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
-        mainActivityBinder.rvMain.addItemDecoration(itemDecoration)
 
         mainViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
+        setupRv()
+
+        setupSrc()
+
+        mainViewModel.friendResponds.observe(this) {
+            showData(it)
+        }
+
+    }
+
+
+    private fun setupSrc() {
+        with(mainActivityBinder) {
+            searchView.setupWithSearchBar(searchBar)
+            searchView
+                .editText
+                .setOnEditorActionListener { textView, actionId, event ->
+                    searchBar.text = searchView.text
+                    searchBar.text?.let {
+                        if (it.isNotEmpty()) {
+                            mainViewModel.getFindFriend(searchBar.text.toString())
+                        }else{
+                            mainViewModel.getFriendsAll()
+                        }
+                    }
+                    searchView.hide()
+                    false
+                }
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        mainActivityBinder.progressBar.visibility = if (isLoading) {
+        mainActivityBinder
+            .progressBar
+            .visibility = if (isLoading) {
             View.VISIBLE
         } else {
             View.GONE
@@ -49,8 +70,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showData(listFriend: List<FriendResponds>) {
-        val adapter = AdapterFriendCard()
         adapter.submitList(listFriend)
-        mainActivityBinder.rvMain.adapter = adapter
     }
+
+    private fun setupRv() {
+        val layoutManager = LinearLayoutManager(this)
+        adapter = AdapterFriendCard()
+        mainActivityBinder.rvMain.adapter = adapter
+        mainActivityBinder.rvMain.layoutManager = layoutManager
+        mainActivityBinder.rvMain.addItemDecoration(
+            DividerItemDecoration(this, layoutManager.orientation)
+        )
+        adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
+            override fun onClickCard(friendRespondsItem: FriendResponds) {
+                val moveWithObject = Intent(this@MainActivity, MainProfileActivity::class.java)
+                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondsItem)
+                startActivity(moveWithObject)
+            }
+        })
+    }
+
+    companion object {
+        const val TAG = "MainActivity"
+    }
+
 }

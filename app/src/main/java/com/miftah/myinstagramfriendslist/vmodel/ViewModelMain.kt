@@ -1,11 +1,13 @@
-package com.miftah.myinstagramfriendslist.ui.vmodel
+package com.miftah.myinstagramfriendslist.vmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.miftah.myinstagramfriendslist.data.retrofit.ApiConfig
+import com.miftah.myinstagramfriendslist.data.retrofit.FriendList
 import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
+import com.miftah.myinstagramfriendslist.data.retrofit.UserResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,8 +15,8 @@ import retrofit2.Response
 class ViewModelMain : ViewModel() {
 
     // friend data
-    private val _friendRespondsItem = MutableLiveData<FriendResponds>()
-    val friendRespondsItem: LiveData<FriendResponds> = _friendRespondsItem
+    private val _userResponse = MutableLiveData<UserResponse>()
+    val UserResponse: LiveData<UserResponse> = _userResponse
 
     // all data friends follower
     private val _friendFollower = MutableLiveData<List<FriendResponds>>()
@@ -33,8 +35,10 @@ class ViewModelMain : ViewModel() {
 
     /* Nyari semua */
     fun getFriendsAll() {
+
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriends()
+
         client.enqueue(object : Callback<List<FriendResponds>> {
             override fun onResponse(
                 call: Call<List<FriendResponds>>,
@@ -63,26 +67,24 @@ class ViewModelMain : ViewModel() {
     fun getFindFriend(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFindFriend(name)
-        client.enqueue(object : Callback<List<FriendResponds>> {
-            override fun onResponse(
-                call: Call<List<FriendResponds>>,
-                response: Response<List<FriendResponds>>
-            ) {
+        client.enqueue(object : Callback<FriendList>{
+            override fun onResponse(call: Call<FriendList>, response: Response<FriendList>) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responses = response.body()
                     if (responses != null) {
-                        _friendResponds.value = responses
+                        _friendResponds.value = responses.items
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<List<FriendResponds>>, t: Throwable) {
+            override fun onFailure(call: Call<FriendList>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
+
         })
     }
 
@@ -90,23 +92,20 @@ class ViewModelMain : ViewModel() {
     fun getFriend(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriend(name)
-        client.enqueue(object : Callback<FriendResponds> {
-            override fun onResponse(
-                call: Call<FriendResponds>,
-                response: Response<FriendResponds>
-            ) {
+        client.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responses = response.body()
                     if (responses != null) {
-                        _friendRespondsItem.value = responses
+                        _userResponse.value = responses
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<FriendResponds>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
@@ -117,7 +116,7 @@ class ViewModelMain : ViewModel() {
     fun getFollower(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriendFollowers(name)
-        client.enqueue(object : Callback<List<FriendResponds>>{
+        client.enqueue(object : Callback<List<FriendResponds>> {
             override fun onResponse(
                 call: Call<List<FriendResponds>>,
                 response: Response<List<FriendResponds>>
@@ -126,7 +125,7 @@ class ViewModelMain : ViewModel() {
                 if (response.isSuccessful) {
                     val responses = response.body()
                     if (responses != null) {
-                        _friendFollowing.value = responses
+                        _friendFollower.value = responses
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -144,7 +143,7 @@ class ViewModelMain : ViewModel() {
     fun getFollowing(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriendFollowings(name)
-        client.enqueue(object : Callback<List<FriendResponds>>{
+        client.enqueue(object : Callback<List<FriendResponds>> {
             override fun onResponse(
                 call: Call<List<FriendResponds>>,
                 response: Response<List<FriendResponds>>

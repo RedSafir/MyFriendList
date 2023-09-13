@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainProfileFragment">
+    tools:context=".ui.MainProfileActivity">
 
-    <!-- TODO: Update blank fragment layout -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_main_profile"
         android:layout_width="100dp"
@@ -90,7 +89,7 @@
         android:background="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tabTextColor="?attr/colorPrimary"
+        app:tabTextColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/tv_follower"/>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -114,5 +113,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
