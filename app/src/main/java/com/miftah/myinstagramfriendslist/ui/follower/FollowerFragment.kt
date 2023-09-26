@@ -1,7 +1,7 @@
 package com.miftah.myinstagramfriendslist.ui.follower
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +10,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
 import com.miftah.myinstagramfriendslist.databinding.FragmentFollowerBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
-import com.miftah.myinstagramfriendslist.ui.follower.data.ViewModelFollower
-import com.miftah.myinstagramfriendslist.ui.profile.data.ViewModelProfile
+import com.miftah.myinstagramfriendslist.ui.profile.MainProfileActivity
+import com.miftah.myinstagramfriendslist.ui.profile.ViewModelProfile
 
-class FolowerFragment : Fragment() {
+class FollowerFragment : Fragment() {
 
     private lateinit var binding: FragmentFollowerBinding
-    private lateinit var adapter : AdapterFriendCard
+    private lateinit var adapter: AdapterFriendCard
     private val mainViewModel by viewModels<ViewModelFollower>()
     private val sharedViewModel by activityViewModels<ViewModelProfile>()
 
@@ -35,7 +35,7 @@ class FolowerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedViewModel.userResponse.observe(viewLifecycleOwner) {
-            mainViewModel.getFollower(it.name)
+            mainViewModel.getFollower(it.login)
         }
 
         setupRv()
@@ -45,7 +45,6 @@ class FolowerFragment : Fragment() {
         }
 
         mainViewModel.friendFollower.observe(viewLifecycleOwner) {
-            Log.d(TAG, "onViewCreated: ${it.isEmpty()}")
             showData(it)
         }
     }
@@ -58,10 +57,16 @@ class FolowerFragment : Fragment() {
         binding.rvFollower.addItemDecoration(
             DividerItemDecoration(requireActivity(), layoutManager.orientation)
         )
+        adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
+            override fun onClickCard(friendRespondsItem: FriendResponds) {
+                val moveWithObject = Intent(requireActivity(), MainProfileActivity::class.java)
+                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondsItem)
+                startActivity(moveWithObject)
+            }
+        })
     }
 
     private fun showData(friendResponds: List<FriendResponds>?) {
-
         adapter.submitList(friendResponds)
 
     }

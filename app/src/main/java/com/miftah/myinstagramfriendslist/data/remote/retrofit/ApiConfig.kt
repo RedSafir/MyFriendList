@@ -1,4 +1,4 @@
-package com.miftah.myinstagramfriendslist.data.retrofit
+package com.miftah.myinstagramfriendslist.data.remote.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

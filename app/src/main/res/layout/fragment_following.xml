@@ -4,8 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.following.FollowingFragment"
-    android:background="@color/design_default_color_primary">
+    tools:context=".ui.following.FollowingFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_folowing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/card_main"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -15,10 +20,4 @@
         android:visibility="gone"
         android:layout_gravity="center|top"
         tools:visibility="visible" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_folowing"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
 </FrameLayout>

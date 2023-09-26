@@ -1,12 +1,12 @@
-package com.miftah.myinstagramfriendslist.ui.main.data
+package com.miftah.myinstagramfriendslist.ui.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.miftah.myinstagramfriendslist.data.retrofit.ApiConfig
-import com.miftah.myinstagramfriendslist.data.retrofit.FriendList
-import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiConfig
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendList
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

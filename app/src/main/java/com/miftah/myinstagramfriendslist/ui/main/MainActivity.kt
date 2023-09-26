@@ -7,10 +7,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
-import com.miftah.myinstagramfriendslist.ui.main.data.ViewModelMain
 import com.miftah.myinstagramfriendslist.ui.profile.MainProfileActivity
 
 class MainActivity : AppCompatActivity() {
@@ -82,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinder.rvMain.layoutManager = layoutManager
         mainActivityBinder.rvMain.addItemDecoration(
             DividerItemDecoration(this, layoutManager.orientation)
-        )
+        )   
         adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
             override fun onClickCard(friendRespondsItem: FriendResponds) {
                 val moveWithObject = Intent(this@MainActivity, MainProfileActivity::class.java)

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
 import com.miftah.myinstagramfriendslist.databinding.CardMainBinding
 
 class AdapterFriendCard : ListAdapter<FriendResponds, AdapterFriendCard.ViewHolder>(DIFF_CALLBACK) {
@@ -41,8 +41,6 @@ class AdapterFriendCard : ListAdapter<FriendResponds, AdapterFriendCard.ViewHold
     fun setOnClickCallback(call: IOnClickListener) {
         this.onItemClickCallback = call
     }
-
-
 
     interface IOnClickListener {
         fun onClickCard(friendRespondsItem: FriendResponds)

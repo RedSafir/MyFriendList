@@ -8,11 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.miftah.myinstagramfriendslist.R
-import com.miftah.myinstagramfriendslist.data.retrofit.FriendResponds
-import com.miftah.myinstagramfriendslist.data.retrofit.UserResponse
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.response.UserResponse
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainProfileBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterTabLayout
-import com.miftah.myinstagramfriendslist.ui.profile.data.ViewModelProfile
 
 class MainProfileActivity : AppCompatActivity() {
 
