@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
 import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiConfig
-import com.miftah.myinstagramfriendslist.data.remote.response.UserResponse
 import com.miftah.myinstagramfriendslist.ui.main.ViewModelMain
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,8 +13,8 @@ import retrofit2.Response
 
 class ViewModelProfile : ViewModel() {
 
-    private val _userResponse = MutableLiveData<UserResponse>()
-    val userResponse: LiveData<UserResponse> = _userResponse
+    private val _userRespond = MutableLiveData<UserRespond>()
+    val userRespond: LiveData<UserRespond> = _userRespond
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -22,20 +22,20 @@ class ViewModelProfile : ViewModel() {
     fun getFriend(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriend(name)
-        client.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+        client.enqueue(object : Callback<UserRespond> {
+            override fun onResponse(call: Call<UserRespond>, response: Response<UserRespond>) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responses = response.body()
                     if (responses != null) {
-                        _userResponse.value = responses
+                        _userRespond.value = responses
                     }
                 } else {
                     Log.e(ViewModelMain.TAG, "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+            override fun onFailure(call: Call<UserRespond>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(ViewModelMain.TAG, "onFailure: ${t.message}")
             }

@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
 import com.miftah.myinstagramfriendslist.databinding.FragmentFollowingBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
 import com.miftah.myinstagramfriendslist.ui.profile.MainProfileActivity
@@ -34,7 +34,7 @@ class FollowingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.userResponse.observe(viewLifecycleOwner) {
+        sharedViewModel.userRespond.observe(viewLifecycleOwner) {
             mainViewModel.getFollowing(it.login)
         }
 
@@ -59,15 +59,15 @@ class FollowingFragment : Fragment() {
             DividerItemDecoration(requireActivity(), layoutManager.orientation)
         )
         adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
-            override fun onClickCard(friendRespondsItem: FriendResponds) {
+            override fun onClickCard(friendRespondItem: FriendRespond) {
                 val moveWithObject = Intent(requireActivity(), MainProfileActivity::class.java)
-                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondsItem)
+                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondItem)
                 startActivity(moveWithObject)
             }
         })
     }
 
-    private fun showData(friendResponds: List<FriendResponds>?) {
+    private fun showData(friendResponds: List<FriendRespond>?) {
         adapter.submitList(friendResponds)
 
     }

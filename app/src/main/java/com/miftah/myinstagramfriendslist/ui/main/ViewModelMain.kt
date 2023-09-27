@@ -4,17 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendListResponse
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
 import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiConfig
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendList
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ViewModelMain : ViewModel() {
 
-    private val _friendResponds = MutableLiveData<List<FriendResponds>>()
-    val friendResponds: LiveData<List<FriendResponds>> = _friendResponds
+    private val _friendRespond = MutableLiveData<List<FriendRespond>>()
+    val friendRespond: LiveData<List<FriendRespond>> = _friendRespond
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -24,23 +24,23 @@ class ViewModelMain : ViewModel() {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriends()
 
-        client.enqueue(object : Callback<List<FriendResponds>> {
+        client.enqueue(object : Callback<List<FriendRespond>> {
             override fun onResponse(
-                call: Call<List<FriendResponds>>,
-                response: Response<List<FriendResponds>>
+                call: Call<List<FriendRespond>>,
+                response: Response<List<FriendRespond>>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responses = response.body()
                     if (responses != null) {
-                        _friendResponds.value = responses
+                        _friendRespond.value = responses
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<List<FriendResponds>>, t: Throwable) {
+            override fun onFailure(call: Call<List<FriendRespond>>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
@@ -51,20 +51,20 @@ class ViewModelMain : ViewModel() {
     fun getFindFriend(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFindFriend(name)
-        client.enqueue(object : Callback<FriendList> {
-            override fun onResponse(call: Call<FriendList>, response: Response<FriendList>) {
+        client.enqueue(object : Callback<FriendListResponse> {
+            override fun onResponse(call: Call<FriendListResponse>, response: Response<FriendListResponse>) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responses = response.body()
                     if (responses != null) {
-                        _friendResponds.value = responses.items
+                        _friendRespond.value = responses.items
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<FriendList>, t: Throwable) {
+            override fun onFailure(call: Call<FriendListResponse>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }

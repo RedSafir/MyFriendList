@@ -6,21 +6,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
 import com.miftah.myinstagramfriendslist.databinding.CardMainBinding
 
-class AdapterFriendCard : ListAdapter<FriendResponds, AdapterFriendCard.ViewHolder>(DIFF_CALLBACK) {
+class AdapterFriendCard : ListAdapter<FriendRespond, AdapterFriendCard.ViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: IOnClickListener
 
     inner class ViewHolder(val binding: CardMainBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(friendList: FriendResponds) {
+        fun bind(friendList: FriendRespond) {
             binding.tvNama.text = friendList.login
             Glide.with(binding.root)
                 .load(friendList.avatarUrl)
                 .into(binding.imgFriend)
         }
-        fun callCard(friendList: FriendResponds) {
+        fun callCard(friendList: FriendRespond) {
             onItemClickCallback.onClickCard(friendList)
         }
     }
@@ -43,21 +43,21 @@ class AdapterFriendCard : ListAdapter<FriendResponds, AdapterFriendCard.ViewHold
     }
 
     interface IOnClickListener {
-        fun onClickCard(friendRespondsItem: FriendResponds)
+        fun onClickCard(friendRespondItem: FriendRespond)
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FriendResponds>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FriendRespond>() {
             override fun areItemsTheSame(
-                oldItem: FriendResponds,
-                newItem: FriendResponds
+                oldItem: FriendRespond,
+                newItem: FriendRespond
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: FriendResponds,
-                newItem: FriendResponds
+                oldItem: FriendRespond,
+                newItem: FriendRespond
             ): Boolean {
                 return oldItem == newItem
             }

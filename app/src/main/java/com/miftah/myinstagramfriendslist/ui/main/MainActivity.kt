@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainBinding
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
 import com.miftah.myinstagramfriendslist.ui.profile.MainProfileActivity
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         setupSrc()
 
-        mainViewModel.friendResponds.observe(this) {
+        mainViewModel.friendRespond.observe(this) {
             showData(it)
         }
 
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showData(listFriend: List<FriendResponds>) {
+    private fun showData(listFriend: List<FriendRespond>) {
         adapter.submitList(listFriend)
     }
 
@@ -83,9 +83,9 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, layoutManager.orientation)
         )   
         adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
-            override fun onClickCard(friendRespondsItem: FriendResponds) {
+            override fun onClickCard(friendRespondItem: FriendRespond) {
                 val moveWithObject = Intent(this@MainActivity, MainProfileActivity::class.java)
-                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondsItem)
+                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondItem)
                 startActivity(moveWithObject)
             }
         })

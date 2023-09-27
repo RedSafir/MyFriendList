@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
 import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiConfig
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendResponds
 import com.miftah.myinstagramfriendslist.ui.main.ViewModelMain
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,16 +16,16 @@ class ViewModelFollower : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _friendFollower = MutableLiveData<List<FriendResponds>>()
-    val friendFollower: LiveData<List<FriendResponds>> = _friendFollower
+    private val _friendFollower = MutableLiveData<List<FriendRespond>>()
+    val friendFollower: LiveData<List<FriendRespond>> = _friendFollower
 
     fun getFollower(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriendFollowers(name)
-        client.enqueue(object : Callback<List<FriendResponds>> {
+        client.enqueue(object : Callback<List<FriendRespond>> {
             override fun onResponse(
-                call: Call<List<FriendResponds>>,
-                response: Response<List<FriendResponds>>
+                call: Call<List<FriendRespond>>,
+                response: Response<List<FriendRespond>>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
@@ -38,7 +38,7 @@ class ViewModelFollower : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<List<FriendResponds>>, t: Throwable) {
+            override fun onFailure(call: Call<List<FriendRespond>>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(ViewModelMain.TAG, "onFailure: ${t.message}")
             }
