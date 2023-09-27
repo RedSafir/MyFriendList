@@ -35,7 +35,7 @@ class FollowingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedViewModel.userRespond.observe(viewLifecycleOwner) {
-            mainViewModel.getFollowing(it.login)
+//            mainViewModel.getFollowing(it.login)
         }
 
         setupRv()

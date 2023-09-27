@@ -23,7 +23,5 @@ abstract class UserDatabase : RoomDatabase() {
                 ).build()
             }
         }
-
-
     }
 }

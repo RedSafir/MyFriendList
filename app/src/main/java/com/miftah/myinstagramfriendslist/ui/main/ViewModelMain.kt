@@ -1,15 +1,9 @@
 package com.miftah.myinstagramfriendslist.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendListResponse
 import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
-import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ViewModelMain : ViewModel() {
 
@@ -19,7 +13,7 @@ class ViewModelMain : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getFriendsAll() {
+    /*fun getFriendsAll() {
 
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriends()
@@ -46,9 +40,9 @@ class ViewModelMain : ViewModel() {
             }
 
         })
-    }
+    }*/
 
-    fun getFindFriend(name: String) {
+    /*fun getFindFriend(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFindFriend(name)
         client.enqueue(object : Callback<FriendListResponse> {
@@ -70,7 +64,7 @@ class ViewModelMain : ViewModel() {
             }
 
         })
-    }
+    }*/
 
     companion object {
         const val TAG = "ViewModelMain"

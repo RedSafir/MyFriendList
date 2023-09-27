@@ -53,7 +53,7 @@ class MainProfileActivity : AppCompatActivity() {
     }
 
     private fun setupLayout(friendRespond: FriendRespond) {
-        mainViewModel.getFriend(friendRespond.login)
+//        mainViewModel.getFriend(friendRespond.login)
         val selectionAdapter = AdapterTabLayout(this)
         val viewPager = mainProfileActivity.viewPager
 

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        mainViewModel.getFriendsAll()
+//        mainViewModel.getFriendsAll()
 
         setupRv()
 
@@ -49,9 +49,9 @@ class MainActivity : AppCompatActivity() {
                     searchBar.text = searchView.text
                     searchBar.text?.let {
                         if (it.isNotEmpty()) {
-                            mainViewModel.getFindFriend(searchBar.text.toString())
+//                            mainViewModel.getFindFriend(searchBar.text.toString())
                         }else{
-                            mainViewModel.getFriendsAll()
+//                            mainViewModel.getFriendsAll()
                         }
                     }
                     searchView.hide()

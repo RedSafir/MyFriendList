@@ -1,15 +1,9 @@
 package com.miftah.myinstagramfriendslist.ui.following
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
-import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiConfig
-import com.miftah.myinstagramfriendslist.ui.main.ViewModelMain
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ViewModelFollowing : ViewModel() {
 
@@ -20,7 +14,7 @@ class ViewModelFollowing : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getFollowing(name: String) {
+    /*fun getFollowing(name: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFriendFollowings(name)
         client.enqueue(object : Callback<List<FriendRespond>> {
@@ -45,5 +39,5 @@ class ViewModelFollowing : ViewModel() {
             }
 
         })
-    }
+    }*/
 }
