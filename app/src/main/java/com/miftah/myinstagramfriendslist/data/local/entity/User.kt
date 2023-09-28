@@ -6,22 +6,23 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    val id : Int,
 
-    @ColumnInfo(name = "name")
+    @field:PrimaryKey
+    @field:ColumnInfo(name = "name")
     val name : String,
 
-    @ColumnInfo(name = "img")
+    @field:ColumnInfo(name = "img")
     val img : String,
 
-    @ColumnInfo(name = "followers")
-    val followers : String,
+    @field:ColumnInfo(name = "followersUrl")
+    val followersUrl : String,
 
-    @ColumnInfo(name = "following")
-    val following : String,
+    @field:ColumnInfo(name = "followingUrl")
+    val followingUrl : String,
 
-    @ColumnInfo(name = "favorite")
-    val isFav : Boolean
+    @field:ColumnInfo(name = "followers")
+    val followers : Int,
+
+    @field:ColumnInfo(name = "following")
+    val following : Int,
 )

@@ -3,38 +3,37 @@ package com.miftah.myinstagramfriendslist.data.remote.retrofit
 import com.miftah.myinstagramfriendslist.data.remote.response.FriendListResponse
 import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
 import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
-import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @Headers("Authorization: token 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")
     @GET("users")
-    fun getFriends() : Call<List<FriendRespond>>
+    suspend fun getFriends(
+        @Query("apiKey") apiKey: String
+    ): List<FriendRespond>
 
-    @Headers("Authorization: token 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")
     @GET("search/users")
-    fun getFindFriend(
-        @Query("q") name : String
-    ) : Call<FriendListResponse>
+    suspend fun getFindFriend(
+        @Query("q") name: String,
+        @Query("apiKey") apiKey: String
+    ): FriendListResponse
 
-    @Headers("Authorization: token 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")
     @GET("users/{name}")
-    fun getFriend(
-        @Path("name") name : String
-    ) : Call<UserRespond>
+    suspend fun getFriend(
+        @Path("name") name: String,
+        @Query("apiKey") apiKey: String
+    ): UserRespond
 
-    @Headers("Authorization: token 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")
     @GET("users/{name}/followers")
-    fun getFriendFollowers(
-        @Path("name") name : String
-    ) : Call<List<FriendRespond>>
+    suspend fun getFriendFollowers(
+        @Path("name") name: String,
+        @Query("apiKey") apiKey: String
+    ): List<FriendRespond>
 
-    @Headers("Authorization: token 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")
     @GET("users/{name}/following")
-    fun getFriendFollowings(
-        @Path("name") name : String
-    ) : Call<List<FriendRespond>>
+    suspend fun getFriendFollowings(
+        @Path("name") name: String,
+        @Query("apiKey") apiKey: String
+    ): List<FriendRespond>
 }

@@ -1,7 +1,10 @@
 package com.miftah.myinstagramfriendslist.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class UserRespond(
 
     @field:SerializedName("following_url")
@@ -27,4 +30,4 @@ data class UserRespond(
 
     @field:SerializedName("name")
     val name: String,
-)
+) : Parcelable

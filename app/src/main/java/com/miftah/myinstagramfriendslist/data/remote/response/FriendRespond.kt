@@ -18,5 +18,4 @@ data class FriendRespond(
 
 	@field:SerializedName("avatar_url") //
 	val avatarUrl: String,
-
 ) : Parcelable
