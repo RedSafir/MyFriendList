@@ -1,11 +1,26 @@
 package com.miftah.myinstagramfriendslist.ui.profile
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
+import androidx.lifecycle.viewModelScope
+import com.miftah.myinstagramfriendslist.data.local.entity.FavFriend
 import com.miftah.myinstagramfriendslist.repository.ProfileRepository
-import com.miftah.myinstagramfriendslist.repository.Result
+import kotlinx.coroutines.launch
 
 class ViewModelProfile(private val profileRepository: ProfileRepository) : ViewModel() {
-    fun getUser(name : String) : LiveData<Result<UserRespond>> = profileRepository.getUser(name)
+
+    fun getUser(name: String) = profileRepository.getUser(name)
+
+    fun isFavUser(name: String) = profileRepository.isUserFav(name)
+
+    fun insertFavPUser(friend: FavFriend) {
+        viewModelScope.launch {
+            profileRepository.saveFavUser(friend)
+        }
+    }
+
+    fun deleteFavPerson(name: String) {
+        viewModelScope.launch {
+            profileRepository.deleteFavUser(name)
+        }
+    }
 }

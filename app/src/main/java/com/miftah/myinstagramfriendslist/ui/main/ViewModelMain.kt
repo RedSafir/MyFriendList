@@ -3,14 +3,14 @@ package com.miftah.myinstagramfriendslist.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
+import com.miftah.myinstagramfriendslist.data.remote.response.FavFriend
 import com.miftah.myinstagramfriendslist.repository.ProfileRepository
 import com.miftah.myinstagramfriendslist.repository.Result
 
 class ViewModelMain(private val profileRepository: ProfileRepository) : ViewModel() {
 
-    private val _friendAll = MediatorLiveData<Result<List<FriendRespond>>>()
-    val friendAll: LiveData<Result<List<FriendRespond>>> by lazy {
+    private val _friendAll = MediatorLiveData<Result<List<FavFriend>>>()
+    val friendAll: LiveData<Result<List<FavFriend>>> by lazy {
         getFriendAll()
         _friendAll
     }

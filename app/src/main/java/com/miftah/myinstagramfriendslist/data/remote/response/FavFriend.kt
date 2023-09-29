@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FriendRespond(
+data class FavFriend(
 
 	@field:SerializedName("following_url") //
 	val followingUrl: String,

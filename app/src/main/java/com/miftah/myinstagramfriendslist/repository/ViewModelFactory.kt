@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.miftah.myinstagramfriendslist.di.Injection
+import com.miftah.myinstagramfriendslist.ui.favorite.ViewModelFavorite
 import com.miftah.myinstagramfriendslist.ui.follow.ViewModelFollow
 import com.miftah.myinstagramfriendslist.ui.main.ViewModelMain
 import com.miftah.myinstagramfriendslist.ui.profile.ViewModelProfile
@@ -19,6 +20,8 @@ class ViewModelFactory(private val newsRepository: ProfileRepository) :
             return ViewModelProfile(newsRepository) as T
         } else if (modelClass.isAssignableFrom(ViewModelFollow::class.java)) {
             return ViewModelFollow(newsRepository) as T
+        } else if (modelClass.isAssignableFrom(ViewModelFavorite::class.java)){
+            return ViewModelFavorite(newsRepository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

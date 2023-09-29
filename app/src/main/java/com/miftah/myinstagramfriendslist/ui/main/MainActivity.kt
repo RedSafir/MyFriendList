@@ -8,28 +8,28 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
+import com.miftah.myinstagramfriendslist.R
+import com.miftah.myinstagramfriendslist.data.remote.response.FavFriend
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainBinding
 import com.miftah.myinstagramfriendslist.repository.Result
 import com.miftah.myinstagramfriendslist.repository.ViewModelFactory
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
+import com.miftah.myinstagramfriendslist.ui.favorite.FavoriteActivity
 import com.miftah.myinstagramfriendslist.ui.profile.MainProfileActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainActivityBinder: ActivityMainBinding
     private lateinit var adapter: AdapterFriendCard
+    private val mainViewModel by viewModels<ViewModelMain> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityBinder = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainActivityBinder.root)
         supportActionBar?.hide()
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
-        val mainViewModel: ViewModelMain by viewModels {
-            factory
-        }
 
         setupRv()
 
@@ -55,6 +55,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         with(mainActivityBinder) {
+            searchBar.inflateMenu(R.menu.option_menu)
+            searchBar.setOnMenuItemClickListener {
+                when(it.itemId){
+                    R.id.menu1 -> {
+                        val moveWithObject = Intent(this@MainActivity, FavoriteActivity::class.java)
+                        startActivity(moveWithObject)
+                    }
+                }
+                true
+            }
             searchView.setupWithSearchBar(searchBar)
             searchView
                 .editText
@@ -83,9 +93,9 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, layoutManager.orientation)
         )
         adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
-            override fun onClickCard(friendRespondItem: FriendRespond) {
+            override fun onClickCard(favFriendItem: FavFriend) {
                 val moveWithObject = Intent(this@MainActivity, MainProfileActivity::class.java)
-                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondItem)
+                moveWithObject.putExtra(MainProfileActivity.PERSON_NAME, favFriendItem.login)
                 startActivity(moveWithObject)
             }
         })

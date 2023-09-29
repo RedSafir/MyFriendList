@@ -1,7 +1,7 @@
 package com.miftah.myinstagramfriendslist.data.remote.retrofit
 
 import com.miftah.myinstagramfriendslist.data.remote.response.FriendListResponse
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
+import com.miftah.myinstagramfriendslist.data.remote.response.FavFriend
 import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -11,7 +11,7 @@ interface ApiService {
     @GET("users")
     suspend fun getFriends(
         @Query("apiKey") apiKey: String
-    ): List<FriendRespond>
+    ): List<FavFriend>
 
     @GET("search/users")
     suspend fun getFindFriend(
@@ -29,11 +29,11 @@ interface ApiService {
     suspend fun getFriendFollowers(
         @Path("name") name: String,
         @Query("apiKey") apiKey: String
-    ): List<FriendRespond>
+    ): List<FavFriend>
 
     @GET("users/{name}/following")
     suspend fun getFriendFollowings(
         @Path("name") name: String,
         @Query("apiKey") apiKey: String
-    ): List<FriendRespond>
+    ): List<FavFriend>
 }

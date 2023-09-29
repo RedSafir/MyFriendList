@@ -4,17 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.miftah.myinstagramfriendslist.BuildConfig
-import com.miftah.myinstagramfriendslist.data.local.room.UserDao
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
+import com.miftah.myinstagramfriendslist.data.local.entity.FavFriend
+import com.miftah.myinstagramfriendslist.data.local.room.FavFriendDao
 import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
 import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiService
 
 class ProfileRepository(
-    private val userDB: UserDao,
+    private val favFriend: FavFriendDao,
     private val apiService: ApiService
 ) {
 
-    fun getAllFriend() : LiveData<Result<List<FriendRespond>>> = liveData {
+    fun getAllFriend() : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFriends(API_KEY)
@@ -25,7 +25,7 @@ class ProfileRepository(
         }
     }
 
-    fun findFriend(name : String) : LiveData<Result<List<FriendRespond>>> = liveData {
+    fun findFriend(name : String) : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFindFriend(name, API_KEY).items
@@ -47,7 +47,7 @@ class ProfileRepository(
         }
     }
 
-    fun getFollower(name : String) : LiveData<Result<List<FriendRespond>>> = liveData {
+    fun getFollower(name : String) : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFriendFollowers(name, API_KEY)
@@ -58,7 +58,7 @@ class ProfileRepository(
         }
     }
 
-    fun getFollowing(name : String) : LiveData<Result<List<FriendRespond>>> = liveData {
+    fun getFollowing(name : String) : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFriendFollowings(name, API_KEY)
@@ -69,8 +69,29 @@ class ProfileRepository(
         }
     }
 
+    suspend fun saveFavUser(fav : FavFriend) {
+        favFriend.insertUser(fav)
+    }
+
+    suspend fun deleteFavUser(name : String){
+        favFriend.deleteUser(name)
+    }
+
+    fun isUserFav(name : String) = favFriend.isUserFav(name)
+
+    fun getFavPersons() = favFriend.getAll()
+
     companion object {
         const val API_KEY = BuildConfig.API_KEY
         const val TAG = "Profile_Repository"
+        @Volatile
+        private var instance: ProfileRepository? = null
+        fun getInstance(
+            apiService: ApiService,
+            favFriend: FavFriendDao,
+        ): ProfileRepository =
+            instance ?: synchronized(this) {
+                instance ?: ProfileRepository(favFriend, apiService)
+            }.also { instance = it }
     }
 }

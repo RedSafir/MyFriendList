@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.data.remote.response.FriendRespond
+import com.miftah.myinstagramfriendslist.data.remote.response.FavFriend
 import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
 import com.miftah.myinstagramfriendslist.databinding.FragmentFollowBinding
 import com.miftah.myinstagramfriendslist.repository.Result
@@ -22,8 +22,9 @@ class FollowFragment : Fragment() {
 
     private lateinit var binding: FragmentFollowBinding
     private lateinit var adapter: AdapterFriendCard
-    private var tabName: String? = null
-    private var data: UserRespond? = null
+    private val followViewModel by viewModels<ViewModelFollow> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,13 +37,8 @@ class FollowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tabName = arguments?.getString(ARG_TAB)
-        data = arguments?.getParcelable(TAB_VALUE)
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val followViewModel: ViewModelFollow by viewModels {
-            factory
-        }
+        val tabName = arguments?.getString(ARG_TAB)
+        val data : UserRespond? = arguments?.getParcelable(TAB_VALUE)
 
         setupRv()
 
@@ -75,15 +71,15 @@ class FollowFragment : Fragment() {
             DividerItemDecoration(requireActivity(), layoutManager.orientation)
         )
         adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
-            override fun onClickCard(friendRespondItem: FriendRespond) {
+            override fun onClickCard(favFriendItem: FavFriend) {
                 val moveWithObject = Intent(requireActivity(), MainProfileActivity::class.java)
-                moveWithObject.putExtra(MainProfileActivity.MAIN_PERSON, friendRespondItem)
+                moveWithObject.putExtra(MainProfileActivity.PERSON_NAME, favFriendItem.login)
                 startActivity(moveWithObject)
             }
         })
     }
 
-    private fun observableData(result: Result<List<FriendRespond>>) {
+    private fun observableData(result: Result<List<FavFriend>>) {
         when (result) {
             is Result.Loading -> binding.progressBar.visibility = View.VISIBLE
             is Result.Error -> {

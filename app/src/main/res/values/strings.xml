@@ -7,4 +7,6 @@
     <string name="findFriend">Cari Teman</string>
     <string name="follower">Follower</string>
     <string name="following">Following</string>
+    <string name="favorite_menu">favorite_menu</string>
+    <string name="setting_menu">setting_menu</string>
 </resources>

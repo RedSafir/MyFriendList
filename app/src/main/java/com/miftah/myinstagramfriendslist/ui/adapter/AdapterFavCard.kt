@@ -6,18 +6,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.miftah.myinstagramfriendslist.data.remote.response.FavFriend
+import com.miftah.myinstagramfriendslist.data.local.entity.FavFriend
 import com.miftah.myinstagramfriendslist.databinding.CardMainBinding
 
-class AdapterFriendCard : ListAdapter<FavFriend, AdapterFriendCard.ViewHolder>(DIFF_CALLBACK) {
+class AdapterFavCard : ListAdapter<FavFriend, AdapterFavCard.ViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: IOnClickListener
 
     inner class ViewHolder(val binding: CardMainBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(friendList: FavFriend) {
-            binding.tvNama.text = friendList.login
+            binding.tvNama.text = friendList.name
             Glide.with(binding.root)
-                .load(friendList.avatarUrl)
+                .load(friendList.img)
                 .into(binding.imgFriend)
         }
         fun callCard(friendList: FavFriend) {
