@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FavFriend(
+data class Friend(
 
-	@field:SerializedName("following_url") //
+	@field:SerializedName("following_url")
 	val followingUrl: String,
 
-	@field:SerializedName("login") //
+	@field:SerializedName("login")
 	val login: String,
 
-	@field:SerializedName("followers_url") //
+	@field:SerializedName("followers_url")
 	val followersUrl: String,
 
-	@field:SerializedName("avatar_url") //
+	@field:SerializedName("avatar_url")
 	val avatarUrl: String,
 ) : Parcelable

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.miftah.myinstagramfriendslist.data.local.entity.FavFriend
 
-@Database(entities = [FavFriend::class], version = 1)
+@Database(entities = [FavFriend::class], version = 1, exportSchema = false)
 abstract class FavFriendDatabase : RoomDatabase() {
     abstract fun userDao() :FavFriendDao
 

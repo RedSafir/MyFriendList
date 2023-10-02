@@ -8,6 +8,7 @@ import com.miftah.myinstagramfriendslist.ui.favorite.ViewModelFavorite
 import com.miftah.myinstagramfriendslist.ui.follow.ViewModelFollow
 import com.miftah.myinstagramfriendslist.ui.main.ViewModelMain
 import com.miftah.myinstagramfriendslist.ui.profile.ViewModelProfile
+import com.miftah.myinstagramfriendslist.ui.setting.ViewModelSetting
 
 class ViewModelFactory(private val newsRepository: ProfileRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -20,8 +21,10 @@ class ViewModelFactory(private val newsRepository: ProfileRepository) :
             return ViewModelProfile(newsRepository) as T
         } else if (modelClass.isAssignableFrom(ViewModelFollow::class.java)) {
             return ViewModelFollow(newsRepository) as T
-        } else if (modelClass.isAssignableFrom(ViewModelFavorite::class.java)){
+        } else if (modelClass.isAssignableFrom(ViewModelFavorite::class.java)) {
             return ViewModelFavorite(newsRepository) as T
+        } else if (modelClass.isAssignableFrom(ViewModelSetting::class.java)) {
+            return ViewModelSetting(newsRepository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

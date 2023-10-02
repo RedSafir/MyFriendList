@@ -6,15 +6,18 @@ import androidx.lifecycle.liveData
 import com.miftah.myinstagramfriendslist.BuildConfig
 import com.miftah.myinstagramfriendslist.data.local.entity.FavFriend
 import com.miftah.myinstagramfriendslist.data.local.room.FavFriendDao
+import com.miftah.myinstagramfriendslist.data.preference.setting.SettingPreference
+import com.miftah.myinstagramfriendslist.data.remote.response.Friend
 import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
 import com.miftah.myinstagramfriendslist.data.remote.retrofit.ApiService
 
 class ProfileRepository(
     private val favFriend: FavFriendDao,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val dataStore : SettingPreference
 ) {
 
-    fun getAllFriend() : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
+    fun getAllFriend() : LiveData<Result<List<Friend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFriends(API_KEY)
@@ -25,7 +28,7 @@ class ProfileRepository(
         }
     }
 
-    fun findFriend(name : String) : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
+    fun findFriend(name : String) : LiveData<Result<List<Friend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFindFriend(name, API_KEY).items
@@ -47,7 +50,7 @@ class ProfileRepository(
         }
     }
 
-    fun getFollower(name : String) : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
+    fun getFollower(name : String) : LiveData<Result<List<Friend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFriendFollowers(name, API_KEY)
@@ -58,7 +61,7 @@ class ProfileRepository(
         }
     }
 
-    fun getFollowing(name : String) : LiveData<Result<List<com.miftah.myinstagramfriendslist.data.remote.response.FavFriend>>> = liveData {
+    fun getFollowing(name : String) : LiveData<Result<List<Friend>>> = liveData {
         emit(Result.Loading)
         try {
             val client = apiService.getFriendFollowings(name, API_KEY)
@@ -81,6 +84,10 @@ class ProfileRepository(
 
     fun getFavPersons() = favFriend.getAll()
 
+    fun getTheme() = dataStore.getThemeSetting()
+
+    suspend fun saveTheme(isDarkModeActive: Boolean) = dataStore.saveThemeSetting(isDarkModeActive)
+
     companion object {
         const val API_KEY = BuildConfig.API_KEY
         const val TAG = "Profile_Repository"
@@ -89,9 +96,10 @@ class ProfileRepository(
         fun getInstance(
             apiService: ApiService,
             favFriend: FavFriendDao,
+            dataStore: SettingPreference
         ): ProfileRepository =
             instance ?: synchronized(this) {
-                instance ?: ProfileRepository(favFriend, apiService)
+                instance ?: ProfileRepository(favFriend, apiService, dataStore)
             }.also { instance = it }
     }
 }

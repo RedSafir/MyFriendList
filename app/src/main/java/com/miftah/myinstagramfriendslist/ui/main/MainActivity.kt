@@ -6,16 +6,18 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.miftah.myinstagramfriendslist.R
-import com.miftah.myinstagramfriendslist.data.remote.response.FavFriend
+import com.miftah.myinstagramfriendslist.data.remote.response.Friend
 import com.miftah.myinstagramfriendslist.databinding.ActivityMainBinding
 import com.miftah.myinstagramfriendslist.repository.Result
 import com.miftah.myinstagramfriendslist.repository.ViewModelFactory
 import com.miftah.myinstagramfriendslist.ui.adapter.AdapterFriendCard
 import com.miftah.myinstagramfriendslist.ui.favorite.FavoriteActivity
 import com.miftah.myinstagramfriendslist.ui.profile.MainProfileActivity
+import com.miftah.myinstagramfriendslist.ui.setting.SettingPreferenceActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +32,14 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinder = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainActivityBinder.root)
         supportActionBar?.hide()
+
+        mainViewModel.getTheme().observe(this) {
+            if (it) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
 
         setupRv()
 
@@ -62,6 +72,10 @@ class MainActivity : AppCompatActivity() {
                         val moveWithObject = Intent(this@MainActivity, FavoriteActivity::class.java)
                         startActivity(moveWithObject)
                     }
+                    R.id.menu2 -> {
+                        val moveToSetting = Intent(this@MainActivity, SettingPreferenceActivity::class.java)
+                        startActivity(moveToSetting)
+                    }
                 }
                 true
             }
@@ -93,9 +107,9 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, layoutManager.orientation)
         )
         adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
-            override fun onClickCard(favFriendItem: FavFriend) {
+            override fun onClickCard(friendItem: Friend) {
                 val moveWithObject = Intent(this@MainActivity, MainProfileActivity::class.java)
-                moveWithObject.putExtra(MainProfileActivity.PERSON_NAME, favFriendItem.login)
+                moveWithObject.putExtra(MainProfileActivity.PERSON_NAME, friendItem.login)
                 startActivity(moveWithObject)
             }
         })

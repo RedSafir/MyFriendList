@@ -9,4 +9,5 @@
     <string name="following">Following</string>
     <string name="favorite_menu">favorite_menu</string>
     <string name="setting_menu">setting_menu</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

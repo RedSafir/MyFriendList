@@ -1,6 +1,7 @@
 package com.miftah.myinstagramfriendslist.ui.follow
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.miftah.myinstagramfriendslist.data.remote.response.FavFriend
+import com.miftah.myinstagramfriendslist.data.remote.response.Friend
 import com.miftah.myinstagramfriendslist.data.remote.response.UserRespond
 import com.miftah.myinstagramfriendslist.databinding.FragmentFollowBinding
 import com.miftah.myinstagramfriendslist.repository.Result
@@ -38,7 +39,12 @@ class FollowFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val tabName = arguments?.getString(ARG_TAB)
-        val data : UserRespond? = arguments?.getParcelable(TAB_VALUE)
+
+        val data : UserRespond? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("TAB_VALUE", UserRespond::class.java)
+        } else {
+            arguments?.getParcelable<UserRespond>(TAB_VALUE)
+        }
 
         setupRv()
 
@@ -71,15 +77,15 @@ class FollowFragment : Fragment() {
             DividerItemDecoration(requireActivity(), layoutManager.orientation)
         )
         adapter.setOnClickCallback(object : AdapterFriendCard.IOnClickListener {
-            override fun onClickCard(favFriendItem: FavFriend) {
+            override fun onClickCard(friendItem: Friend) {
                 val moveWithObject = Intent(requireActivity(), MainProfileActivity::class.java)
-                moveWithObject.putExtra(MainProfileActivity.PERSON_NAME, favFriendItem.login)
+                moveWithObject.putExtra(MainProfileActivity.PERSON_NAME, friendItem.login)
                 startActivity(moveWithObject)
             }
         })
     }
 
-    private fun observableData(result: Result<List<FavFriend>>) {
+    private fun observableData(result: Result<List<Friend>>) {
         when (result) {
             is Result.Loading -> binding.progressBar.visibility = View.VISIBLE
             is Result.Error -> {
@@ -95,6 +101,7 @@ class FollowFragment : Fragment() {
                 binding.progressBar.visibility = View.GONE
                 adapter.submitList(result.data)
             }
+            else -> {}
         }
     }
 

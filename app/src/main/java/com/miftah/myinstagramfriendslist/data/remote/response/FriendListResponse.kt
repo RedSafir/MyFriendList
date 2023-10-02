@@ -8,6 +8,6 @@ data class FriendListResponse(
     val incompleteResults: Boolean,
 
     @field:SerializedName("items")
-    val items: List<FavFriend>
+    val items: List<Friend>
 )
 
